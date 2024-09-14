@@ -1,7 +1,6 @@
 import React from "react";
 import "./App.css";
 import ExpenseOption from './components/ExpenseOption';
-import PieChart from "./components/Header";
 import "./styles/styles.css"
 
 import {
