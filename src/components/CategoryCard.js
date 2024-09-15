@@ -1,6 +1,13 @@
 // CategoryCard.js
 import React, { useState } from "react";
-import { Box, Text, Flex, Collapse, useDisclosure } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Flex,
+  Collapse,
+  useDisclosure,
+  Icon,
+} from "@chakra-ui/react";
 import ExpenseModal from "./ExpenseModal";
 import "../styles/styles.css";
 
@@ -13,6 +20,23 @@ function formatDate(dateStr) {
   return date.toLocaleDateString("en-US", options);
 }
 
+const CircleIcon = (props) => (
+  <Icon viewBox="0 0 200 200" {...props}>
+    <path
+      fill="currentColor"
+      d="M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0"
+    />
+  </Icon>
+);
+
+const colors = new Map([
+  ["Bills", "#F1642E"],
+  ["Food & Drink", "#A3B565"],
+  ["Treats", "#FCDD9D"],
+  ["Groceries", "#90D5FF"],
+  ["Personal Care", "pink"],
+  ["Shopping", "blue"]
+])
 
 const CategoryCard = ({ category, expenses, total }) => {
   const { isOpen, onToggle } = useDisclosure();
@@ -29,8 +53,6 @@ const CategoryCard = ({ category, expenses, total }) => {
   };
 
   const handleUpdateExpense = (updatedExpense) => {
-    // Update the selected expense state here if needed
-    // This function will be called when the user clicks "Save" in the modal
     console.log("Updated Expense:", updatedExpense);
   };
 
@@ -44,10 +66,16 @@ const CategoryCard = ({ category, expenses, total }) => {
         cursor="pointer"
         onClick={onToggle}
       >
+        <Flex direction="row" alignItems="center">
+          <CircleIcon boxSize={6} color={colors.get(category)} mr={2}/>
+          <Text fontWeight="bold" fontSize="lg">
+            {category}
+          </Text>
+        </Flex>
+
         <Text fontWeight="bold" fontSize="lg">
-          {category}
+          ${Math.round(total)}
         </Text>
-        <Text fontWeight="bold" fontSize="lg">${Math.round(total)}</Text>
       </Flex>
 
       {/* Expenses Container */}

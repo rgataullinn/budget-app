@@ -1,6 +1,6 @@
 // CategoryCard.js
 import React, { useState } from "react";
-import { Box, Text, Flex, Collapse, useDisclosure } from "@chakra-ui/react";
+import { Box, Text, Flex, Collapse, useDisclosure, Icon } from "@chakra-ui/react";
 import ExpenseModal from "./ExpenseModal";
 
 function formatDate(dateStr) {
@@ -17,6 +17,24 @@ function cntTotal(expenses) {
   for (var i = 0; i < expenses.length; i++) res += expenses[i].amount;
   return res;
 }
+
+const CircleIcon = (props) => (
+  <Icon viewBox="0 0 200 200" {...props}>
+    <path
+      fill="currentColor"
+      d="M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0"
+    />
+  </Icon>
+);
+
+const colors = new Map([
+  ["Bills", "#F1642E"],
+  ["Food & Drink", "#A3B565"],
+  ["Treats", "#FCDD9D"],
+  ["Groceries", "#90D5FF"],
+  ["Personal Care", "pink"],
+  ["Shopping", "blue"]
+])
 
 const DateCard = ({ date, expenses }) => {
   const { isOpen, onToggle } = useDisclosure();
@@ -39,7 +57,8 @@ const DateCard = ({ date, expenses }) => {
   };
 
   return (
-    <Box className="category" padding="5" borderRadius="md" mb={5}>
+    <Box className="category" padding="5" borderRadius="md" mb={5}
+    >
       {/* Clickable Header Row */}
       <Flex
         align="center"
@@ -51,7 +70,7 @@ const DateCard = ({ date, expenses }) => {
         <Text fontWeight="bold" fontSize="lg">
           {formatDate(date)}
         </Text>
-        <Text fontSize="md">${Math.round(cntTotal(expenses))}</Text>
+        <Text fontWeight="bold" fontSize="lg">${Math.round(cntTotal(expenses))}</Text>
       </Flex>
 
       {/* Expenses Container */}
@@ -62,18 +81,14 @@ const DateCard = ({ date, expenses }) => {
               key={index}
               justify="space-between"
               alignItems="center"
-              borderBottom="1px solid"
-              borderColor="gray.200"
               mt={5}
               py={2}
               cursor="pointer"
               onClick={() => handleExpenseClick(expense)}
             >
+              <CircleIcon boxSize={4} mr={1} color={colors.get(expense.category_name)}/>
               <Text flex="1" textAlign="left">
                 {expense.name}
-              </Text>
-              <Text flex="1" textAlign="center">
-                {expense.expense_time}
               </Text>
               <Text flex="1" textAlign="right">
                 ${expense.amount}
