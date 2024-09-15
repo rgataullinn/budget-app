@@ -12,11 +12,13 @@ import ExpenseModal from "./ExpenseModal";
 import "../styles/styles.css";
 
 function formatDate(dateStr) {
-  dateStr = dateStr.replace("-", "/");
-  const date = new Date(dateStr);
+  const date = new Date(dateStr + 'T00:00:00Z');
 
-  const options = { month: "short", day: "numeric" };
+  if (isNaN(date.getTime())) {
+    return "Invalid Date";
+  }
 
+  const options = { month: "short", day: "numeric", timeZone: 'UTC' };
   return date.toLocaleDateString("en-US", options);
 }
 
@@ -58,7 +60,6 @@ const CategoryCard = ({ category, expenses, total }) => {
 
   return (
     <Box className="category" padding="5" borderRadius="md" mb={5}>
-      {/* Clickable Header Row */}
       <Flex
         align="center"
         justify="space-between"

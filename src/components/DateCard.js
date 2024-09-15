@@ -4,13 +4,13 @@ import { Box, Text, Flex, Collapse, useDisclosure, Icon } from "@chakra-ui/react
 import ExpenseModal from "./ExpenseModal";
 
 function formatDate(dateStr) {
-  const date = new Date(dateStr);
+  const date = new Date(dateStr + 'T00:00:00Z');
 
   if (isNaN(date.getTime())) {
     return "Invalid Date";
   }
 
-  const options = { month: "short", day: "numeric" };
+  const options = { month: "short", day: "numeric", timeZone: 'UTC' };
   return date.toLocaleDateString("en-US", options);
 }
 
