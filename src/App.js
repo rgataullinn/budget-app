@@ -4,17 +4,17 @@ import ExpenseOption from './components/ExpenseOption';
 import "./styles/styles.css"
 import Header from "./components/Header";
 import {
-  ChakraProvider
+  ChakraProvider, Box
 } from "@chakra-ui/react";
 
 function App() {
 
   return (
-    <ChakraProvider >
-      <div className="App" w="100%" bg="#f6f6f9">
+    <ChakraProvider>
+      <Box className="App" w="100%" >
         <Header />
         <ExpenseOption />
-      </div>
+      </Box>
     </ChakraProvider>
   );
 }

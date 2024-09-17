@@ -8,7 +8,7 @@ export default function ExpenseCategories() {
   // Example data
   const [categories, setCategories] = useState([]);
   useEffect(() => {
-    axios.get('https://budget-app-api-production.up.railway.app/expenses?isCategory=true&isDate=false')
+    axios.get('https://budget-app-api-production.up.railway.app/expensesByCategory?month=9')
       .then(response => {
         const data = response.data.expenses;
         if (Array.isArray(data)) {

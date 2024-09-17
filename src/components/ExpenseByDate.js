@@ -7,7 +7,7 @@ import axios from 'axios';
 export default function ExpenseDays() {
   const [days, setDays] = useState([]);
   useEffect(() => {
-    axios.get('https://budget-app-api-production.up.railway.app/expenses?isCategory=false&isDate=true')
+    axios.get('https://budget-app-api-production.up.railway.app/expensesByDate?month=9')
       .then(response => {
         const data = response.data.expenses;
         if (Array.isArray(data)) {

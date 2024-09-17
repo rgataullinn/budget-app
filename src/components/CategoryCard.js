@@ -32,12 +32,13 @@ const CircleIcon = (props) => (
 );
 
 const colors = new Map([
-  ["Bills", "#F1642E"],
+  ["Bills", "#ff0000"],
   ["Food & Drink", "#A3B565"],
-  ["Treats", "#FCDD9D"],
+  ["Treats", "#cc00cc"],
   ["Groceries", "#90D5FF"],
-  ["Personal Care", "pink"],
-  ["Shopping", "blue"]
+  ["Personal Care", "#ff99cc"],
+  ["Shopping", "#3366cc"],
+  ["Transportation", "#cc6600"]
 ])
 
 const CategoryCard = ({ category, expenses, total }) => {
@@ -87,7 +88,7 @@ const CategoryCard = ({ category, expenses, total }) => {
               key={index}
               justify="space-between"
               alignItems="center"
-              borderBottom="1px solid"
+              borderBottom="1px solid black"
               borderColor="gray.200"
               py={2}
               mt={5}

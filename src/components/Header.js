@@ -6,7 +6,7 @@ function Header() {
   const [totalSpent, setTotalSpent] = useState(0);
   useEffect(() => {
     axios
-      .get("https://budget-app-api-production.up.railway.app/totalSpent")
+      .get("https://budget-app-api-production.up.railway.app/totalSpent?month=9")
       .then((response) => {
         const data = response.data.totalSpent;
         setTotalSpent(data);
@@ -17,8 +17,8 @@ function Header() {
   }, []);
 
   return (
-    <Box mt={5}>
-      <Text fontSize="3xl">Total spend</Text>
+    <Box mt={5} >
+      <Text fontWeight="bold" fontSize="3xl">Total spend</Text>
       <Text fontSize="4xl" color="black">${totalSpent}</Text>
     </Box>
   );

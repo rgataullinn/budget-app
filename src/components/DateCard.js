@@ -30,12 +30,13 @@ const CircleIcon = (props) => (
 );
 
 const colors = new Map([
-  ["Bills", "#F1642E"],
+  ["Bills", "#ff0000"],
   ["Food & Drink", "#A3B565"],
-  ["Treats", "#FCDD9D"],
+  ["Treats", "#cc00cc"],
   ["Groceries", "#90D5FF"],
-  ["Personal Care", "pink"],
-  ["Shopping", "blue"]
+  ["Personal Care", "#ff99cc"],
+  ["Shopping", "#3366cc"],
+  ["Transportation", "#cc6600"]
 ])
 
 const DateCard = ({ date, expenses }) => {
@@ -86,6 +87,7 @@ const DateCard = ({ date, expenses }) => {
               mt={5}
               py={2}
               cursor="pointer"
+              bg="#ffffff"
               onClick={() => handleExpenseClick(expense)}
             >
               <CircleIcon boxSize={4} mr={1} color={colors.get(expense.category_name)}/>
