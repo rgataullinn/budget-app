@@ -47,8 +47,8 @@ export default function BasicPie() {
             cy: 130,
           },
         ]}
+        slotProps={{ legend: { hidden: true } }}
         height={300}
-        width={600}
       />
     </div>
   );
