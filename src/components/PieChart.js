@@ -43,7 +43,7 @@ export default function BasicPie() {
             cornerRadius: 5,
             startAngle: 1,
             endAngle: 360,
-            cx: 200,
+            cx: "50%",
             cy: 130,
           },
         ]}
