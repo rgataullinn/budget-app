@@ -13,27 +13,8 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
-
-const ExpenseModal = ({ isOpen, onClose, expense, onUpdate }) => {
+const ExpenseModal = ({ isOpen, onClose, expense, onUpdate, categories }) => {
   const [editableExpense, setEditableExpense] = useState(expense || {});
-  const [categories, getCategories] = useState([]);
-  useEffect(() => {
-    axios
-      .get("https://budget-app-api-production.up.railway.app/categories")
-      .then((response) => {
-        const categories = response.data.categories;
-        if (Array.isArray(categories)) {
-          getCategories(categories);
-        } else {
-          console.error("Unexpected data format:", categories);
-          getCategories([]);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching categories:", error);
-        getCategories([]);
-      });
-  }, []);
   const toast = useToast();
   useEffect(() => {
     setEditableExpense(expense || {});
@@ -62,7 +43,7 @@ const ExpenseModal = ({ isOpen, onClose, expense, onUpdate }) => {
         isClosable: true,
       });
       onClose();
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       console.error("Error updating expense:", error);
       toast({

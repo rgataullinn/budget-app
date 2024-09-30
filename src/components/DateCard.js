@@ -1,5 +1,5 @@
 // CategoryCard.js
-import React, { useState } from "react";
+import React, { useState} from "react";
 import {
   Box,
   Text,
@@ -36,17 +36,8 @@ const CircleIcon = (props) => (
   </Icon>
 );
 
-const colors = new Map([
-  ["Bills", "#ff0000"],
-  ["Food & Drink", "#A3B565"],
-  ["Treats", "#cc00cc"],
-  ["Groceries", "#90D5FF"],
-  ["Personal Care", "#ff99cc"],
-  ["Shopping", "#3366cc"],
-  ["Transportation", "#cc6600"],
-]);
 
-const DateCard = ({ date, expenses }) => {
+const DateCard = ({ date, expenses, categories }) => {
   const { isOpen, onToggle } = useDisclosure();
   const [selectedExpense, setSelectedExpense] = useState(null);
   const {
@@ -101,7 +92,7 @@ const DateCard = ({ date, expenses }) => {
               <CircleIcon
                 boxSize={4}
                 mr={2}
-                color={colors.get(expense.category_name)}
+                color={expense.color}
               />
               <Box flex="3" textAlign="left">
                 <Text fontSize='lg'>{expense.name}</Text>
@@ -121,6 +112,7 @@ const DateCard = ({ date, expenses }) => {
         onClose={closeModal}
         expense={selectedExpense}
         onUpdate={handleUpdateExpense}
+        categories={categories}
       />
     </Box>
   );

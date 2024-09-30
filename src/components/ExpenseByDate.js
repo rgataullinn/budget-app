@@ -5,6 +5,25 @@ import DateCard from './DateCard';
 import axios from 'axios';
 
 export default function ExpenseDays() {
+  const [categories, getCategories] = useState([]);
+  useEffect(() => {
+    axios
+      .get("https://budget-app-api-production.up.railway.app/categories")
+      .then((response) => {
+        const categories = response.data.categories;
+        if (Array.isArray(categories)) {
+          getCategories(categories);
+        } else {
+          console.error("Unexpected data format:", categories);
+          getCategories([]);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+        getCategories([]);
+      });
+  }, []);
+
   const [days, setDays] = useState([]);
   useEffect(() => {
     axios.get('https://budget-app-api-production.up.railway.app/expensesByDate?month=9')
@@ -30,6 +49,7 @@ export default function ExpenseDays() {
           key={index}
           date={dateData.day}
           expenses={dateData.expenses}
+          categories={categories}
         />
       ))}
     </Flex>

@@ -1,5 +1,5 @@
 // CategoryCard.js
-import React, { useState } from "react";
+import React, { useState} from "react";
 import {
   Box,
   Text,
@@ -31,17 +31,9 @@ const CircleIcon = (props) => (
   </Icon>
 );
 
-const colors = new Map([
-  ["Bills", "#ff0000"],
-  ["Food & Drink", "#A3B565"],
-  ["Treats", "#cc00cc"],
-  ["Groceries", "#90D5FF"],
-  ["Personal Care", "#ff99cc"],
-  ["Shopping", "#3366cc"],
-  ["Transportation", "#cc6600"]
-])
 
-const CategoryCard = ({ category, expenses, total }) => {
+
+const CategoryCard = ({ category, expenses, total, categories }) => {
   const { isOpen, onToggle } = useDisclosure();
   const [selectedExpense, setSelectedExpense] = useState(null);
   const {
@@ -69,7 +61,7 @@ const CategoryCard = ({ category, expenses, total }) => {
         onClick={onToggle}
       >
         <Flex direction="row" alignItems="center">
-          <CircleIcon boxSize={6} color={colors.get(category)} mr={2}/>
+          <CircleIcon boxSize={6} color={category.color} mr={2}/>
           <Text fontWeight="bold" fontSize="lg">
             {category}
           </Text>
@@ -115,6 +107,7 @@ const CategoryCard = ({ category, expenses, total }) => {
         onClose={closeModal}
         expense={selectedExpense}
         onUpdate={handleUpdateExpense}
+        categories={categories}
       />
     </Box>
   );
