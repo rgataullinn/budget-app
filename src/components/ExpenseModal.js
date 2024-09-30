@@ -9,12 +9,31 @@ import {
   Input,
   Button,
   Flex,
+  Select,
   useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 
 const ExpenseModal = ({ isOpen, onClose, expense, onUpdate }) => {
   const [editableExpense, setEditableExpense] = useState(expense || {});
+  const [categories, getCategories] = useState([]);
+  useEffect(() => {
+    axios
+      .get("https://budget-app-api-production.up.railway.app/categories")
+      .then((response) => {
+        const categories = response.data.categories;
+        if (Array.isArray(categories)) {
+          getCategories(categories);
+        } else {
+          console.error("Unexpected data format:", categories);
+          getCategories([]);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching categories:", error);
+        getCategories([]);
+      });
+  }, []);
   const toast = useToast();
   useEffect(() => {
     setEditableExpense(expense || {});
@@ -24,7 +43,7 @@ const ExpenseModal = ({ isOpen, onClose, expense, onUpdate }) => {
     const { name, value } = e.target;
     setEditableExpense((prev) => ({
       ...prev,
-      [name]: name === 'amount' && value !== "" ? parseFloat(value) : value,
+      [name]: (name === 'amount' || name === 'category_id') && value !== "" ? parseFloat(value) : value,
     }));
   };
   const handleSave = async () => {
@@ -108,12 +127,18 @@ const ExpenseModal = ({ isOpen, onClose, expense, onUpdate }) => {
               value={editableExpense.description || ""}
               onChange={handleChange}
             />
-            <Input
-              placeholder="Category"
-              name="category_id"
-              value={editableExpense.category_id || ""}
-              onChange={handleChange}
-            />
+            <Select
+                name="category_id"
+                value={editableExpense.category_id || ""}
+                onChange={handleChange}
+                placeholder="Select category"
+              >
+                {categories.map((category) => (
+                  <option key={category.id} value={category.id}>
+                    {category.name}
+                  </option>
+                ))}
+              </Select>
             <Input
               placeholder="Amount"
               type="number"
