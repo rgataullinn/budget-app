@@ -1,16 +1,23 @@
 // CategoryCard.js
 import React, { useState } from "react";
-import { Box, Text, Flex, Collapse, useDisclosure, Icon } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Flex,
+  Collapse,
+  useDisclosure,
+  Icon,
+} from "@chakra-ui/react";
 import ExpenseModal from "./ExpenseModal";
 
 function formatDate(dateStr) {
-  const date = new Date(dateStr + 'T00:00:00Z');
+  const date = new Date(dateStr + "T00:00:00Z");
 
   if (isNaN(date.getTime())) {
     return "Invalid Date";
   }
 
-  const options = { month: "short", day: "numeric", timeZone: 'UTC' };
+  const options = { month: "short", day: "numeric", timeZone: "UTC" };
   return date.toLocaleDateString("en-US", options);
 }
 
@@ -36,8 +43,8 @@ const colors = new Map([
   ["Groceries", "#90D5FF"],
   ["Personal Care", "#ff99cc"],
   ["Shopping", "#3366cc"],
-  ["Transportation", "#cc6600"]
-])
+  ["Transportation", "#cc6600"],
+]);
 
 const DateCard = ({ date, expenses }) => {
   const { isOpen, onToggle } = useDisclosure();
@@ -60,8 +67,7 @@ const DateCard = ({ date, expenses }) => {
   };
 
   return (
-    <Box className="category" padding="5" borderRadius="md" mb={5}
-    >
+    <Box className="category" padding="5" borderRadius="md" mb={5}>
       {/* Clickable Header Row */}
       <Flex
         align="center"
@@ -73,7 +79,9 @@ const DateCard = ({ date, expenses }) => {
         <Text fontWeight="bold" fontSize="lg">
           {formatDate(date)}
         </Text>
-        <Text fontWeight="bold" fontSize="lg">${Math.round(cntTotal(expenses))}</Text>
+        <Text fontWeight="bold" fontSize="lg">
+          ${Math.round(cntTotal(expenses))}
+        </Text>
       </Flex>
 
       {/* Expenses Container */}
@@ -90,10 +98,15 @@ const DateCard = ({ date, expenses }) => {
               bg="#ffffff"
               onClick={() => handleExpenseClick(expense)}
             >
-              <CircleIcon boxSize={4} mr={1} color={colors.get(expense.category_name)}/>
-              <Text flex="1" textAlign="left">
-                {expense.name}
-              </Text>
+              <CircleIcon
+                boxSize={4}
+                mr={2}
+                color={colors.get(expense.category_name)}
+              />
+              <Box flex="3" textAlign="left">
+                <Text fontSize='lg'>{expense.name}</Text>
+                <Text fontSize='sm' color='gray'>{expense.category_name} {expense.expense_time}</Text>
+              </Box>
               <Text flex="1" textAlign="right">
                 ${expense.amount}
               </Text>

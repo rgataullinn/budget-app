@@ -24,7 +24,7 @@ const ExpenseModal = ({ isOpen, onClose, expense, onUpdate }) => {
     const { name, value } = e.target;
     setEditableExpense((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: name === 'amount' && value !== "" ? parseFloat(value) : value,
     }));
   };
   const handleSave = async () => {
