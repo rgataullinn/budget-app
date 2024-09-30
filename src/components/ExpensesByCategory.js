@@ -56,6 +56,7 @@ export default function ExpenseCategories() {
             key={index}
             category={categoryData.category}
             total={categoryData.total}
+            color={categoryData.color}
             expenses={categoryData.expenses}
             categories={categories_name}
           />

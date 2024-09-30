@@ -33,7 +33,7 @@ const CircleIcon = (props) => (
 
 
 
-const CategoryCard = ({ category, expenses, total, categories }) => {
+const CategoryCard = ({ category, expenses, total, categories, color }) => {
   const { isOpen, onToggle } = useDisclosure();
   const [selectedExpense, setSelectedExpense] = useState(null);
   const {
@@ -61,7 +61,7 @@ const CategoryCard = ({ category, expenses, total, categories }) => {
         onClick={onToggle}
       >
         <Flex direction="row" alignItems="center">
-          <CircleIcon boxSize={6} color={category.color} mr={2}/>
+          <CircleIcon boxSize={6} color={color} mr={2}/>
           <Text fontWeight="bold" fontSize="lg">
             {category}
           </Text>
