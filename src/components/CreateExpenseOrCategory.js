@@ -36,7 +36,7 @@ function CreateExpenseOrCategory({month}) {
         console.error("Error fetching categories:", error);
         getCategories([]);
       });
-  }, []);
+  }, [month]);
 
   const [categoryData, setCategoryData] = useState({
     name: "",
