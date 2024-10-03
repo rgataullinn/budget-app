@@ -18,12 +18,12 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 
-function CreateExpenseOrCategory() {
+function CreateExpenseOrCategory({month}) {
   const [categories, getCategories] = useState([]);
   useEffect(() => {
     axios
-      .get("https://budget-app-api-production.up.railway.app/categories")
-      .then((response) => {
+    .get(`https://budget-app-api-production.up.railway.app/categories?month=${month}`)
+    .then((response) => {
         const categories = response.data.categories;
         if (Array.isArray(categories)) {
           getCategories(categories);
@@ -52,7 +52,7 @@ function CreateExpenseOrCategory() {
     expense_date: "",
   });
 
-  const [selectedTab, setSelectedTab] = useState(0); // To switch between expense and category forms
+  const [selectedTab, setSelectedTab] = useState(0);
   const toast = useToast();
 
   const handleExpenseChange = (e) => {
@@ -67,11 +67,10 @@ function CreateExpenseOrCategory() {
 
   const handleCreateExpense = async () => {
     try {
-      // Ensure category_id and amount are integers
       const postData = {
         ...expenseData,
         category_id: parseInt(expenseData.category_id, 10),
-        amount: parseFloat(expenseData.amount, 10), // Use parseFloat if you need decimal values; use parseInt if you need integers
+        amount: parseFloat(expenseData.amount, 10),
       };
 
       await axios.post(

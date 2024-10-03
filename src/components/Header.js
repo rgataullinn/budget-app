@@ -1,25 +1,26 @@
-import React, {useState, useEffect} from "react";
+import React, { useState } from "react";
 import { Text, Box } from "@chakra-ui/react";
-import axios from "axios";
 
-function Header() {
-  const [totalSpent, setTotalSpent] = useState(0);
-  useEffect(() => {
-    axios
-      .get("https://budget-app-api-production.up.railway.app/totalSpent?month=9")
-      .then((response) => {
-        const data = response.data.totalSpent;
-        setTotalSpent(data);
-      })
-      .catch((error) => {
-        console.error("Error fetching total:", error);
-      });
-  }, []);
+function Header({ month }) {
+  const xqr = new XMLHttpRequest();
+  const [totalSpent, setTotalSpent] = useState();
+  xqr.open('GET', `https://budget-app-api-production.up.railway.app/totalSpent?month=${month}`)
+  xqr.onload = () => {
+    const response = JSON.parse(xqr.responseText);
+    if (xqr.status === 200) {
+      setTotalSpent(response.totalSpent);
+    }
+  }
+  xqr.send();
 
   return (
-    <Box mt={5} >
-      <Text fontWeight="bold" fontSize="3xl">Total spend</Text>
-      <Text fontSize="4xl" color="black">${totalSpent}</Text>
+    <Box mt={5}>
+      <Text fontWeight="bold" fontSize="3xl">
+        Total spend
+      </Text>
+      <Text fontSize="4xl" color="black">
+        ${totalSpent}
+      </Text>
     </Box>
   );
 }

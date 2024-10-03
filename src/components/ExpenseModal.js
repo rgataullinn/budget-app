@@ -13,9 +13,11 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
+
 const ExpenseModal = ({ isOpen, onClose, expense, onUpdate, categories }) => {
   const [editableExpense, setEditableExpense] = useState(expense || {});
   const toast = useToast();
+
   useEffect(() => {
     setEditableExpense(expense || {});
   }, [expense]);
@@ -24,13 +26,14 @@ const ExpenseModal = ({ isOpen, onClose, expense, onUpdate, categories }) => {
     const { name, value } = e.target;
     setEditableExpense((prev) => ({
       ...prev,
-      [name]: (name === 'amount' || name === 'category_id') && value !== "" ? parseFloat(value) : value,
+      [name]: (name === "amount" || name === "category_id") && value !== "" ? parseFloat(value) : value,
     }));
   };
+
   const handleSave = async () => {
     try {
-      const response = await axios.post(
-        `https://budget-app-api-production.up.railway.app/expense`,
+      const response = await axios.put(
+        `https://budget-app-api-production.up.railway.app/expense?id=${editableExpense.id}`,
         editableExpense
       );
 
@@ -43,13 +46,11 @@ const ExpenseModal = ({ isOpen, onClose, expense, onUpdate, categories }) => {
         isClosable: true,
       });
       onClose();
-      // window.location.reload();
     } catch (error) {
       console.error("Error updating expense:", error);
       toast({
         title: "Update failed.",
-        description:
-          "There was an error updating your expense. Please try again.",
+        description: "There was an error updating your expense. Please try again.",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -57,10 +58,10 @@ const ExpenseModal = ({ isOpen, onClose, expense, onUpdate, categories }) => {
     }
   };
 
-  const handleDelete = async() => {
+  const handleDelete = async () => {
     try {
       const response = await axios.delete(
-        `https://budget-app-api-production.up.railway.app/expense?id=${editableExpense.id}`,
+        `https://budget-app-api-production.up.railway.app/expense?id=${editableExpense.id}`
       );
 
       onUpdate(response.data);
@@ -77,8 +78,7 @@ const ExpenseModal = ({ isOpen, onClose, expense, onUpdate, categories }) => {
       console.error("Error deleting expense:", error);
       toast({
         title: "Delete failed.",
-        description:
-          "There was an error deleting your expense. Please try again.",
+        description: "There was an error deleting your expense. Please try again.",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -95,7 +95,7 @@ const ExpenseModal = ({ isOpen, onClose, expense, onUpdate, categories }) => {
         <ModalHeader>Edit Expense</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Flex direction="column" spacing={4}>
+          <Flex direction="column" gap={4}>
             <Input
               placeholder="Name"
               name="name"
@@ -109,17 +109,17 @@ const ExpenseModal = ({ isOpen, onClose, expense, onUpdate, categories }) => {
               onChange={handleChange}
             />
             <Select
-                name="category_id"
-                value={editableExpense.category_id || ""}
-                onChange={handleChange}
-                placeholder="Select category"
-              >
-                {categories.map((category) => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-              </Select>
+              name="category_id"
+              value={editableExpense.category_id || ""}
+              onChange={handleChange}
+              placeholder="Select category"
+            >
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </Select>
             <Input
               placeholder="Amount"
               type="number"
@@ -133,7 +133,7 @@ const ExpenseModal = ({ isOpen, onClose, expense, onUpdate, categories }) => {
               value={editableExpense.expense_date || ""}
               onChange={handleChange}
             />
-            <Flex direction="row" spacing={5} justifyContent="space-between">
+            <Flex direction="row" justifyContent="space-between">
               <Button colorScheme="red" onClick={handleDelete}>
                 Delete
               </Button>

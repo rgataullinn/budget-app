@@ -1,5 +1,4 @@
-// CategoryCard.js
-import React, { useState} from "react";
+import React, { useState } from "react";
 import {
   Box,
   Text,
@@ -8,18 +7,23 @@ import {
   useDisclosure,
   Icon,
 } from "@chakra-ui/react";
-import ExpenseModal from "./ExpenseModal";
-import "../styles/styles.css";
+import ExpenseModal from "../ExpenseModal";
 
 function formatDate(dateStr) {
-  const date = new Date(dateStr + 'T00:00:00Z');
+  const date = new Date(dateStr + "T00:00:00Z");
 
   if (isNaN(date.getTime())) {
     return "Invalid Date";
   }
 
-  const options = { month: "short", day: "numeric", timeZone: 'UTC' };
+  const options = { month: "short", day: "numeric", timeZone: "UTC" };
   return date.toLocaleDateString("en-US", options);
+}
+
+function cntTotal(expenses) {
+  let res = 0;
+  for (let i = 0; i < expenses.length; i++) res += expenses[i].amount;
+  return res;
 }
 
 const CircleIcon = (props) => (
@@ -31,9 +35,7 @@ const CircleIcon = (props) => (
   </Icon>
 );
 
-
-
-const CategoryCard = ({ category, expenses, total, categories, color }) => {
+const DateCard = ({ date, expenses, categories }) => {
   const { isOpen, onToggle } = useDisclosure();
   const [selectedExpense, setSelectedExpense] = useState(null);
   const {
@@ -50,9 +52,10 @@ const CategoryCard = ({ category, expenses, total, categories, color }) => {
   const handleUpdateExpense = (updatedExpense) => {
     console.log("Updated Expense:", updatedExpense);
   };
-
+  
   return (
     <Box className="category" padding="5" borderRadius="md" mb={5}>
+      {/* Clickable Header Row */}
       <Flex
         align="center"
         justify="space-between"
@@ -60,39 +63,37 @@ const CategoryCard = ({ category, expenses, total, categories, color }) => {
         cursor="pointer"
         onClick={onToggle}
       >
-        <Flex direction="row" alignItems="center">
-          <CircleIcon boxSize={6} color={color} mr={2}/>
-          <Text fontWeight="bold" fontSize="lg">
-            {category}
-          </Text>
-        </Flex>
-
         <Text fontWeight="bold" fontSize="lg">
-          ${Math.round(total)}
+          {formatDate(date)}
+        </Text>
+        <Text fontWeight="bold" fontSize="lg">
+          ${Math.round(cntTotal(expenses))}
         </Text>
       </Flex>
 
       {/* Expenses Container */}
-      <Collapse in={isOpen}>
-        <Flex direction="column">
+      <Collapse in={!isOpen}>
+        <Flex direction="column" gap={3}>
           {expenses.map((expense, index) => (
             <Flex
               key={index}
               justify="space-between"
               alignItems="center"
-              borderBottom="1px solid black"
-              borderColor="gray.200"
-              py={2}
               mt={5}
+              py={2}
               cursor="pointer"
+              bg="#ffffff"
               onClick={() => handleExpenseClick(expense)}
             >
-              <Text flex="1" textAlign="left">
-                {expense.name}
-              </Text>
-              <Text flex="1" textAlign="center">
-                {formatDate(expense.expense_date)}
-              </Text>
+              <CircleIcon
+                boxSize={4}
+                mr={2}
+                color={expense.color}
+              />
+              <Box flex="3" textAlign="left">
+                <Text fontSize='lg'>{expense.name}</Text>
+                <Text fontSize='sm' color='gray'>{expense.category_name} {expense.expense_time}</Text>
+              </Box>
               <Text flex="1" textAlign="right">
                 ${expense.amount}
               </Text>
@@ -113,4 +114,4 @@ const CategoryCard = ({ category, expenses, total, categories, color }) => {
   );
 };
 
-export default CategoryCard;
+export default DateCard;

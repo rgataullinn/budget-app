@@ -1,34 +1,31 @@
 import { React, useState, useEffect } from "react";
 import { PieChart } from "@mui/x-charts/PieChart";
-import axios from "axios";
 
-export default function BasicPie() {
+export default function BasicPie({ month }) {
   const [categories, setCategories] = useState([]);
+
   useEffect(() => {
-    axios
-      .get(
-        "https://budget-app-api-production.up.railway.app/categoriesAndTotals"
-      )
-      .then((response) => {
-        const data = response.data.categories;
-        if (Array.isArray(data)) {
-          setCategories(data);
-        } else {
-          console.error("Unexpected data format:", data);
-          setCategories([]);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching expenses:", error);
+    const fetchCategories = async () => {
+      const response = await fetch(`https://budget-app-api-production.up.railway.app/categories?month=${month}`);
+      const data = await response.json();
+      if (response.ok) {
+        setCategories(data.categories);
+      } else {
+        console.error("Error fetching categories:", data); // Log error if response is not ok
         setCategories([]);
-      });
-  }, []);
+      }
+    };
+
+    if (month) {
+      fetchCategories();
+    }
+  }, [month]);
 
   const pieChartData = categories.map((category, index) => ({
     id: index,
     value: category.total,
     label: category.name,
-    color: category.color
+    color: category.color,
   }));
 
   return (

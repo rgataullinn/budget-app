@@ -1,5 +1,4 @@
-// CategoryCard.js
-import React, { useState} from "react";
+import React, { useState } from "react";
 import {
   Box,
   Text,
@@ -8,23 +7,17 @@ import {
   useDisclosure,
   Icon,
 } from "@chakra-ui/react";
-import ExpenseModal from "./ExpenseModal";
+import ExpenseModal from "../ExpenseModal";
+import "../../styles/styles.css";
 
 function formatDate(dateStr) {
   const date = new Date(dateStr + "T00:00:00Z");
-
   if (isNaN(date.getTime())) {
     return "Invalid Date";
   }
 
   const options = { month: "short", day: "numeric", timeZone: "UTC" };
   return date.toLocaleDateString("en-US", options);
-}
-
-function cntTotal(expenses) {
-  var res = 0;
-  for (var i = 0; i < expenses.length; i++) res += expenses[i].amount;
-  return res;
 }
 
 const CircleIcon = (props) => (
@@ -36,15 +29,10 @@ const CircleIcon = (props) => (
   </Icon>
 );
 
-
-const DateCard = ({ date, expenses, categories }) => {
+const CategoryCard = ({ category, expenses, total, categories, color }) => {
   const { isOpen, onToggle } = useDisclosure();
   const [selectedExpense, setSelectedExpense] = useState(null);
-  const {
-    isOpen: isModalOpen,
-    onOpen: openModal,
-    onClose: closeModal,
-  } = useDisclosure();
+  const { isOpen: isModalOpen, onOpen: openModal, onClose: closeModal } = useDisclosure();
 
   const handleExpenseClick = (expense) => {
     setSelectedExpense(expense);
@@ -52,14 +40,11 @@ const DateCard = ({ date, expenses, categories }) => {
   };
 
   const handleUpdateExpense = (updatedExpense) => {
-    // Update the selected expense state here if needed
-    // This function will be called when the user clicks "Save" in the modal
     console.log("Updated Expense:", updatedExpense);
   };
 
   return (
     <Box className="category" padding="5" borderRadius="md" mb={5}>
-      {/* Clickable Header Row */}
       <Flex
         align="center"
         justify="space-between"
@@ -67,37 +52,38 @@ const DateCard = ({ date, expenses, categories }) => {
         cursor="pointer"
         onClick={onToggle}
       >
+        <Flex direction="row" alignItems="center">
+          <CircleIcon boxSize={6} color={color} mr={2} />
+          <Text fontWeight="bold" fontSize="lg">
+            {category}
+          </Text>
+        </Flex>
+
         <Text fontWeight="bold" fontSize="lg">
-          {formatDate(date)}
-        </Text>
-        <Text fontWeight="bold" fontSize="lg">
-          ${Math.round(cntTotal(expenses))}
+          ${Math.round(total)}
         </Text>
       </Flex>
 
-      {/* Expenses Container */}
-      <Collapse in={!isOpen}>
-        <Flex direction="column" spacing={3}>
+      <Collapse in={isOpen}>
+        <Flex direction="column">
           {expenses.map((expense, index) => (
             <Flex
               key={index}
               justify="space-between"
               alignItems="center"
-              mt={5}
+              borderBottom="1px solid black"
+              borderColor="gray.200"
               py={2}
+              mt={5}
               cursor="pointer"
-              bg="#ffffff"
               onClick={() => handleExpenseClick(expense)}
             >
-              <CircleIcon
-                boxSize={4}
-                mr={2}
-                color={expense.color}
-              />
-              <Box flex="3" textAlign="left">
-                <Text fontSize='lg'>{expense.name}</Text>
-                <Text fontSize='sm' color='gray'>{expense.category_name} {expense.expense_time}</Text>
-              </Box>
+              <Text flex="1" textAlign="left">
+                {expense.name}
+              </Text>
+              <Text flex="1" textAlign="center">
+                {formatDate(expense.expense_date)}
+              </Text>
               <Text flex="1" textAlign="right">
                 ${expense.amount}
               </Text>
@@ -106,7 +92,6 @@ const DateCard = ({ date, expenses, categories }) => {
         </Flex>
       </Collapse>
 
-      {/* Modal for Expense Details */}
       <ExpenseModal
         isOpen={isModalOpen}
         onClose={closeModal}
@@ -118,4 +103,4 @@ const DateCard = ({ date, expenses, categories }) => {
   );
 };
 
-export default DateCard;
+export default CategoryCard;

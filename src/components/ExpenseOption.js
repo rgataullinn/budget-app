@@ -1,10 +1,10 @@
 import React from "react";
 import { Tabs, Tab, TabPanels, TabPanel, TabList, Text } from "@chakra-ui/react";
-import ExpensesByCategory from "./ExpensesByCategory";
-import ExpensesByDate from "./ExpenseByDate";
+import ExpensesByCategory from "./categories/ExpensesByCategory";
+import ExpensesByDate from "./dates/ExpenseByDate";
 import CreateExpenseOrCategory from "./CreateExpenseOrCategory";
 
-function ExpenseOption() {
+function ExpenseOption({month}) {
   return (
     <Tabs variant="soft-rounded" colorScheme="gray" align="center" marginTop={10}>
       <TabList>
@@ -20,13 +20,15 @@ function ExpenseOption() {
       </TabList>
       <TabPanels>
         <TabPanel>
-            <ExpensesByDate />
+            <ExpensesByDate
+              month={month} />
         </TabPanel>
         <TabPanel>
-          <ExpensesByCategory />
+          <ExpensesByCategory
+              month={month} />
         </TabPanel>
         <TabPanel>
-          <CreateExpenseOrCategory />
+          <CreateExpenseOrCategory month={month}/>
         </TabPanel>
       </TabPanels>
     </Tabs>

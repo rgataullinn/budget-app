@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import ExpenseOption from "./components/ExpenseOption";
 import "./styles/styles.css";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Header from "./components/Header";
 import { ChakraProvider, Box } from "@chakra-ui/react";
+import Login from "./components/Login"; // Import the Login component
 
 const theme = createTheme({
   palette: {
@@ -13,12 +14,24 @@ const theme = createTheme({
 });
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <ChakraProvider>
         <Box className="App" w="100%">
-          <Header />
-          <ExpenseOption />
+          {!isLoggedIn ? (
+            <Login onLogin={handleLogin} /> 
+          ) : (
+            <>
+              <Header month={10} />
+              <ExpenseOption month={10} />
+            </>
+          )}
         </Box>
       </ChakraProvider>
     </ThemeProvider>
