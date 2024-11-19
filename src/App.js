@@ -28,8 +28,8 @@ function App() {
             <Login onLogin={handleLogin} /> 
           ) : (
             <>
-              <Header month={10} />
-              <ExpenseOption month={10} />
+              <Header month={11} />
+              <ExpenseOption month={11} />
             </>
           )}
         </Box>
